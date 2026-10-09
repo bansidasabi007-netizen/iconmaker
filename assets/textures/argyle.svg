@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+     width="200"
+     height="200"
+     viewBox="0 0 200 200">
+
+    <defs>
+
+        <pattern id="argyle"
+                 width="40"
+                 height="40"
+                 patternUnits="userSpaceOnUse">
+
+            <polygon
+                points="20,0 40,20 20,40 0,20"
+                fill="none"
+                stroke="black"
+                stroke-width="2"/>
+
+        </pattern>
+
+    </defs>
+
+    <rect
+        width="100%"
+        height="100%"
+        fill="url(#argyle)"/>
+
+</svg>

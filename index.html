@@ -1,0 +1,2402 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IconBuilder</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Roboto:wght@100..900&family=Poppins:wght@100..900&family=Inter:wght@100..900&family=Montserrat:wght@100..900&family=Open+Sans:wght@300..800&family=Lato:wght@100..900&family=Nunito:wght@200..1000&family=Raleway:wght@100..900&family=Oswald:wght@200..700&family=Ubuntu:wght@300..700&family=Playfair+Display:wght@400..900&family=Merriweather:wght@300..900&family=Bebas+Neue&family=Quicksand:wght@300..700&family=Rubik:wght@300..900&family=Work+Sans:wght@100..900&family=Source+Sans+3:wght@200..900&family=Fira+Sans:wght@100..900&family=PT+Sans:wght@400;700&family=Cinzel:wght@400..900&family=Anton&family=Lobster&family=Pacifico&family=Dancing+Script:wght@400..700&family=Inconsolata:wght@200..900&display=swap"
+        rel="stylesheet">
+    <style>
+        /* ===== PREVIEW CONTENT - NO BORDER / OUTLINE ===== */
+
+        #previewIcon,
+        #iosPreviewIcon,
+        #webPreviewIcon,
+        #previewText,
+        #iosPreviewText,
+        #webPreviewText,
+        #previewImage,
+        #iosPreviewImage,
+        #webPreviewImage {
+            border: 0 !important;
+            outline: 0 !important;
+            box-shadow: none !important;
+        }
+
+        /* Iconify sometimes renders an SVG inside the element */
+        #previewIcon svg,
+        #iosPreviewIcon svg,
+        #webPreviewIcon svg {
+            border: 0 !important;
+            outline: 0 !important;
+            box-shadow: none !important;
+            display: block !important;
+        }
+
+        /* Remove browser focus/active visual */
+        #previewIcon:focus,
+        #previewIcon:focus-visible,
+        #previewIcon:active,
+        #iosPreviewIcon:focus,
+        #iosPreviewIcon:focus-visible,
+        #iosPreviewIcon:active,
+        #webPreviewIcon:focus,
+        #webPreviewIcon:focus-visible,
+        #webPreviewIcon:active {
+            outline: none !important;
+            border: none !important;
+            box-shadow: none !important;
+        }
+
+        /* Preview images */
+        #previewImage,
+        #iosPreviewImage,
+        #webPreviewImage {
+            border: none !important;
+            outline: none !important;
+            box-shadow: none !important;
+        }
+
+        /* Preview text */
+        #previewText,
+        #iosPreviewText,
+        #webPreviewText {
+            border: none !important;
+            outline: none !important;
+            box-shadow: none !important;
+        }
+
+        /* Prevent accidental image focus/selection visuals */
+        #previewImage,
+        #iosPreviewImage,
+        #webPreviewImage {
+            -webkit-user-drag: none;
+            user-select: none;
+        }
+
+
+        /* =========================
+   THEME SYSTEM
+   ========================= */
+
+        :root {
+
+            /* DARK */
+            --page-bg: #1D1822;
+
+            --header-bg: #1D1822;
+            --sidebar-bg: #241F2A;
+            --surface-bg: #2A2432;
+            --surface-2-bg: #2B2532;
+
+            --preview-bg: #141014;
+
+            --border-color: #3A3344;
+            --border-light: #494252;
+
+            --text-primary: #FFFFFF;
+            --text-secondary: #9CA3AF;
+            --text-muted: #7F7788;
+
+            --hover-bg: #342D3D;
+        }
+
+
+        /* =========================
+   LIGHT THEME
+   ========================= */
+
+        body.light-theme {
+
+            --page-bg: #FFFFFF;
+
+            --header-bg: #FFFFFF;
+            --sidebar-bg: #FFFFFF;
+
+            --surface-bg: #FFFFFF;
+            --surface-2-bg: #F7F6FA;
+
+            --preview-bg: #F5F4F8;
+
+            --border-color: #E2DFE8;
+            --border-light: #D8D3E0;
+
+            --text-primary: #2B2433;
+            --text-secondary: #6F6878;
+            --text-muted: #8B8493;
+
+            --hover-bg: #F1EEF5;
+        }
+
+
+        /* =========================
+   BODY
+   ========================= */
+
+        .theme-body {
+
+            background: var(--page-bg) !important;
+            color: var(--text-primary) !important;
+
+        }
+
+
+        /* =========================
+   HEADER
+   ========================= */
+
+        .theme-header {
+
+            background: var(--header-bg) !important;
+            border-color: var(--border-color) !important;
+
+        }
+
+
+        /* =========================
+   SIDEBAR
+   ========================= */
+
+        .theme-sidebar {
+
+            background: var(--sidebar-bg) !important;
+            border-color: var(--border-color) !important;
+
+        }
+
+
+        /* =========================
+   SURFACES
+   ========================= */
+
+        .theme-surface {
+
+            background: var(--surface-bg) !important;
+
+        }
+
+
+        .theme-surface-2 {
+
+            background: var(--surface-2-bg) !important;
+
+        }
+
+
+        /* =========================
+   PREVIEW AREA
+   ========================= */
+
+        .theme-preview {
+
+            background: var(--preview-bg) !important;
+            border-color: var(--border-color) !important;
+
+        }
+
+
+        /* =========================
+   TEXT
+   ========================= */
+
+        .theme-text {
+
+            color: var(--text-primary) !important;
+
+        }
+
+
+        .theme-text-secondary {
+
+            color: var(--text-secondary) !important;
+
+        }
+
+
+        .theme-text-muted {
+
+            color: var(--text-muted) !important;
+
+        }
+
+
+        /* =========================
+   BORDER
+   ========================= */
+
+        .theme-border {
+
+            border-color: var(--border-color) !important;
+
+        }
+
+
+        /* =========================
+   INPUT
+   ========================= */
+
+        .theme-input {
+
+            background: var(--surface-2-bg) !important;
+
+            color: var(--text-primary) !important;
+
+            border-color: var(--border-light) !important;
+
+        }
+
+
+        .theme-input::placeholder {
+
+            color: var(--text-secondary) !important;
+
+        }
+
+
+        /* =========================
+   SELECT
+   ========================= */
+
+        .theme-select {
+
+            background: var(--surface-2-bg) !important;
+
+            color: var(--text-primary) !important;
+
+            border-color: var(--border-light) !important;
+
+        }
+
+
+        /* =========================
+   TOOLBAR BUTTON
+   ========================= */
+
+        .theme-toolbar-btn {
+
+            background: var(--surface-bg) !important;
+
+            color: var(--text-primary) !important;
+
+            border: 1px solid var(--border-light) !important;
+
+        }
+
+
+        .theme-toolbar-btn:hover {
+
+            background: var(--hover-bg) !important;
+
+        }
+
+
+        /* =========================
+   DIVIDER
+   ========================= */
+
+        .theme-divider {
+
+            border-color: var(--border-color) !important;
+
+        }
+
+        /* =====================================================
+   LIGHT MODE - FORCE UI COLORS
+   ===================================================== */
+
+        body.light-theme {
+
+            /* Main */
+            background: #ffffff !important;
+            color: #211b29 !important;
+
+        }
+
+
+        /* =====================================================
+   DARK BACKGROUNDS -> LIGHT
+   ===================================================== */
+
+        body.light-theme [class*="bg-[#1D1822]"],
+        body.light-theme [class*="bg-[#241E2B]"],
+        body.light-theme [class*="bg-[#241F2A]"],
+        body.light-theme [class*="bg-[#2A2432]"],
+        body.light-theme [class*="bg-[#2B2532]"] {
+
+            background-color: #ffffff !important;
+
+        }
+
+
+        /* Slight gray surfaces */
+
+        body.light-theme [class*="bg-[#2B2532]"] {
+
+            background-color: #f7f6fa !important;
+
+        }
+
+
+        /* =====================================================
+   DARK BORDERS -> LIGHT
+   ===================================================== */
+
+        body.light-theme [class*="border-[#3A3344]"],
+        body.light-theme [class*="border-[#433B4D]"],
+        body.light-theme [class*="border-[#45404D]"],
+        body.light-theme [class*="border-[#494252]"] {
+
+            border-color: #ddd9e5 !important;
+
+        }
+
+
+        /* =====================================================
+   DARK TEXT -> DARK TEXT
+   ===================================================== */
+
+        body.light-theme .text-white {
+
+            color: #211b29 !important;
+
+        }
+
+
+        body.light-theme .text-gray-300 {
+
+            color: #6b6475 !important;
+
+        }
+
+
+        body.light-theme .text-gray-400 {
+
+            color: #81798c !important;
+
+        }
+
+
+        /* =====================================================
+   IMPORTANT:
+   ICONS INSIDE VIOLET BUTTONS MUST STAY WHITE
+   ===================================================== */
+
+        body.light-theme .bg-violet-500 .text-white,
+        body.light-theme .bg-violet-600 .text-white,
+        body.light-theme .bg-violet-500 iconify-icon,
+        body.light-theme .bg-violet-600 iconify-icon {
+
+            color: #ffffff !important;
+
+        }
+
+
+        /* =====================================================
+   INPUTS
+   ===================================================== */
+
+        body.light-theme input,
+        body.light-theme select,
+        body.light-theme textarea {
+
+            background-color: #ffffff !important;
+            color: #211b29 !important;
+            border-color: #ddd9e5 !important;
+
+        }
+
+
+        body.light-theme input::placeholder {
+
+            color: #8b8493 !important;
+
+        }
+
+
+        /* =====================================================
+   PLATFORM CARDS
+   ===================================================== */
+
+        body.light-theme #androidPlatform,
+        body.light-theme #iosPlatform,
+        body.light-theme #webPlatform {
+
+            background-color: #ffffff !important;
+            border-color: #ddd9e5 !important;
+            color: #211b29 !important;
+
+        }
+
+
+        /* Selected Android card */
+
+        body.light-theme #androidPlatform.border-violet-500,
+        body.light-theme #iosPlatform.border-violet-500,
+        body.light-theme #webPlatform.border-violet-500 {
+
+            border-color: #8b5cf6 !important;
+
+        }
+
+
+        /* =====================================================
+   TABS
+   ===================================================== */
+
+        body.light-theme #clipartTab,
+        body.light-theme #textTab,
+        body.light-theme #imageTab {
+
+            color: #211b29 !important;
+
+        }
+
+
+        /* =====================================================
+   SIDEBAR ICON BUTTONS
+   ===================================================== */
+
+        body.light-theme #clipartGrid button {
+
+            background-color: #ffffff !important;
+            border-color: #ddd9e5 !important;
+
+        }
+
+
+        body.light-theme #clipartGrid button:hover {
+
+            background-color: #f1eef5 !important;
+
+        }
+
+
+        /* =====================================================
+   PREVIEW WORKSPACE
+   ===================================================== */
+
+        body.light-theme .theme-preview {
+
+            background-color: #f7f6fa !important;
+            border-color: #ddd9e5 !important;
+
+        }
+
+
+        /* =====================================================
+   DIVIDERS
+   ===================================================== */
+
+        body.light-theme .border-t,
+        body.light-theme .border-b {
+
+            border-color: #e2dfe8 !important;
+
+        }
+
+
+        /* =====================================================
+   TOOLBAR BUTTONS
+   ===================================================== */
+
+        body.light-theme .theme-toolbar-btn {
+
+            background-color: #ffffff !important;
+            color: #211b29 !important;
+            border-color: #ddd9e5 !important;
+
+        }
+
+
+        body.light-theme .theme-toolbar-btn:hover {
+
+            background-color: #f1eef5 !important;
+
+        }
+
+
+        /* =====================================================
+   LOGO BOX
+   ===================================================== */
+
+        body.light-theme header .bg-\[\#2A2432\] {
+
+            background-color: #ffffff !important;
+            border-color: #ddd9e5 !important;
+
+        }
+
+
+        /* =====================================================
+   SCROLLBAR
+   ===================================================== */
+
+        body.light-theme ::-webkit-scrollbar-track {
+
+            background: #ffffff;
+
+        }
+
+
+        body.light-theme ::-webkit-scrollbar-thumb {
+
+            background: #d8d3df;
+
+        }
+
+
+        body.light-theme ::-webkit-scrollbar-thumb:hover {
+
+            background: #bdb5c8;
+
+        }
+
+        /* =========================================================
+   LIGHT THEME - LEFT SIDEBAR
+   ========================================================= */
+
+        body.light-theme .theme-sidebar {
+            background: #FFFFFF !important;
+            color: #18151D !important;
+        }
+
+        /* Sidebar headings */
+        body.light-theme .theme-sidebar h2,
+        body.light-theme .theme-sidebar h3,
+        body.light-theme .theme-sidebar p,
+        body.light-theme .theme-sidebar label,
+        body.light-theme .theme-sidebar span {
+            color: #18151D !important;
+        }
+
+        /* Secondary / muted text */
+        body.light-theme .theme-sidebar .text-gray-400,
+        body.light-theme .theme-sidebar .text-gray-300 {
+            color: #6B6475 !important;
+        }
+
+        /* Tabs container */
+        body.light-theme .theme-sidebar .theme-tabs {
+            background: #F1EFF5 !important;
+        }
+
+        /* Sidebar buttons */
+        body.light-theme .theme-sidebar button {
+            background: #F1EFF5 !important;
+            color: #18151D !important;
+            border-color: #D3CEDC !important;
+        }
+
+        /* Active purple buttons */
+        body.light-theme .theme-sidebar button.bg-violet-500 {
+            background: #8B5CF6 !important;
+            color: #FFFFFF !important;
+            border-color: #8B5CF6 !important;
+        }
+
+        /* Hover */
+        body.light-theme .theme-sidebar button:hover {
+            background: #EAE7EF !important;
+        }
+
+        body.light-theme .theme-sidebar button.bg-violet-500:hover {
+            background: #7C3AED !important;
+        }
+
+        /* Inputs */
+        body.light-theme .theme-sidebar input:not([type="color"]) {
+            background: #FFFFFF !important;
+            color: #18151D !important;
+            border-color: #D3CEDC !important;
+        }
+
+        /* Search */
+        body.light-theme .theme-sidebar input::placeholder {
+            color: #8A8395 !important;
+        }
+
+        /* Select */
+        body.light-theme .theme-sidebar select {
+            background: #FFFFFF !important;
+            color: #18151D !important;
+            border-color: #D3CEDC !important;
+        }
+
+        /* Select options */
+        body.light-theme .theme-sidebar select option {
+            background: #FFFFFF !important;
+            color: #18151D !important;
+        }
+
+        /* Dividers */
+        body.light-theme .theme-sidebar .border-t,
+        body.light-theme .theme-sidebar .border-r {
+            border-color: #DDD9E5 !important;
+        }
+
+        /* Icon grid buttons */
+        body.light-theme #iconGrid button {
+            background: #F1EFF5 !important;
+            color: #18151D !important;
+            border-color: #D3CEDC !important;
+        }
+
+        body.light-theme #iconGrid button:hover {
+            background: #EAE7EF !important;
+        }
+
+        /* Selected icon */
+        body.light-theme #iconGrid button.selected,
+        body.light-theme #iconGrid button.active {
+            border-color: #8B5CF6 !important;
+        }
+
+        /* Percentage text */
+        body.light-theme .theme-sidebar .text-gray-400 {
+            color: #8A8395 !important;
+        }
+
+        /* =========================
+   PREVIEW AREA
+========================= */
+
+        .preview-area {
+            background: #120f10;
+            transition: background-color 0.25s ease;
+        }
+
+        /* LIGHT THEME */
+        html.light .preview-area {
+            background: #f7f7fa;
+        }
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        html {
+            -webkit-text-size-adjust: 100%;
+        }
+
+        @media (max-width: 1023px) {
+
+            /* stop iOS Safari zooming the page when an input gets focus */
+            input:not([type="color"]):not([type="checkbox"]):not([type="file"]):not([type="range"]),
+            select,
+            textarea {
+                font-size: 16px !important;
+            }
+        }
+
+        /* platform cards scroll sideways on small screens, no scrollbar */
+        .platform-scroll {
+            scrollbar-width: none;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .platform-scroll::-webkit-scrollbar {
+            display: none;
+        }
+    </style>
+
+</head>
+
+<body class="lg:overflow-hidden theme-body">
+
+    <!-- Header -->
+    <header
+        class="min-h-[64px] lg:h-[88px] theme-header px-4 sm:px-6 lg:px-8 py-3 lg:py-0 flex items-center justify-between gap-3 border-b lg:border-b-0">
+
+        <!-- Left -->
+        <div class="flex items-center gap-3 lg:gap-4 min-w-0">
+
+            <!-- Logo -->
+            <div
+                class="w-10 h-10 lg:w-14 lg:h-14 shrink-0 rounded-xl theme-surface flex items-center justify-center border theme-border">
+                <iconify-icon icon="solar:magic-stick-3-bold"
+                    class="text-2xl lg:text-3xl text-violet-400"></iconify-icon>
+            </div>
+
+            <div class="min-w-0">
+                <h1 class="text-xl sm:text-2xl lg:text-4xl font-extrabold leading-none truncate">
+                    IconBuilder
+                </h1>
+
+                <p
+                    class="hidden sm:block text-[10px] lg:text-xs tracking-[2px] lg:tracking-[3px] uppercase text-gray-400 mt-1">
+                    App Icon Generator
+                </p>
+            </div>
+
+        </div>
+
+        <!-- Right -->
+        <div class="relative flex items-center gap-2 sm:gap-3 lg:gap-4 shrink-0">
+
+            <!-- Download -->
+            <button id="downloadBtn" aria-label="Download" title="Download"
+                class="h-10 w-10 sm:w-auto sm:h-12 sm:px-8 shrink-0 rounded-full bg-violet-500 hover:bg-violet-600 transition flex items-center justify-center gap-3 font-semibold">
+
+                <iconify-icon icon="solar:download-bold"></iconify-icon>
+
+                <span class="hidden sm:inline">Download</span>
+
+            </button>
+
+
+            <!-- Toolbar -->
+
+            <button
+                class="theme-toolbar-btn hidden sm:flex w-12 h-12 shrink-0 rounded-full items-center justify-center transition">
+
+                <iconify-icon icon="solar:link-bold"></iconify-icon>
+
+            </button>
+
+
+            <!-- Theme Toggle -->
+
+            <button id="themeToggle" type="button"
+                class="theme-toolbar-btn w-10 h-10 sm:w-12 sm:h-12 shrink-0 rounded-full flex items-center justify-center transition">
+
+                <iconify-icon id="themeIcon" icon="solar:sun-bold" width="22">
+                </iconify-icon>
+
+            </button>
+
+
+            <button id="moreBtn"
+                class="w-10 h-10 sm:w-12 sm:h-12 shrink-0 rounded-full border border-[#494252] flex items-center justify-center hover:bg-[#2A2432]">
+
+                <iconify-icon icon="solar:menu-dots-bold"></iconify-icon>
+
+            </button>
+
+            <div id="moreMenu"
+                class="hidden absolute right-0 top-full mt-2 w-44 rounded-xl border border-[#494252] bg-[#211C27] shadow-2xl p-2 z-50">
+
+                <button id="startOverBtn"
+                    class="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left text-white hover:bg-[#2A2432] transition">
+
+                    <iconify-icon icon="solar:trash-bin-trash-bold" class="text-lg">
+                    </iconify-icon>
+
+                    <span>Start over</span>
+
+                </button>
+
+            </div>
+        </div>
+
+    </header>
+
+    <!-- Main -->
+    <main class="flex flex-col lg:flex-row lg:h-[calc(100vh-88px)]">
+
+        <!-- LEFT -->
+        <aside
+            class="order-2 lg:order-1 w-full lg:w-[490px] lg:shrink-0 theme-sidebar border-t lg:border-t-0 lg:border-r flex flex-col">
+
+            <div class="lg:flex-1 lg:overflow-y-auto px-4 sm:px-6 py-5 lg:py-6" id="sidebarContent">
+
+                <!-- Title -->
+                <h2 class="text-2xl lg:text-[30px] font-semibold text-white">
+                    Icon
+                </h2>
+
+                <!-- Tabs -->
+                <div class="theme-tabs mt-6 flex bg-[#2C2633] rounded-xl p-1">
+
+                    <button id="clipartTab" class="flex-1 h-10 rounded-lg bg-violet-500 text-sm font-medium">
+                        Clipart
+                    </button>
+
+                    <button id="textTab" class="flex-1 h-10 rounded-lg text-sm hover:bg-[#3A3344] transition">
+                        Text
+                    </button>
+
+                    <button id="imageTab" class="flex-1 h-10 rounded-lg text-sm hover:bg-[#3A3344] transition">
+                        Image
+                    </button>
+
+                </div>
+
+                <div id="clipartPanel">
+
+
+
+                    <!-- Search -->
+                    <div class="mt-5">
+
+                        <input id="iconSearch" type="text" placeholder="Search"
+                            class="w-full h-11 rounded-lg bg-[#2B2532] border border-[#45404D] px-4 outline-none">
+
+                    </div>
+
+
+
+                    <!-- Icon Grid -->
+                    <div id="iconGrid"
+                        class="mt-5 grid grid-cols-6 sm:grid-cols-8 gap-2 sm:gap-3 h-[300px] lg:h-[360px] overflow-y-auto pr-2">
+                    </div>
+
+                    <!-- Color -->
+                    <div class="mt-5">
+
+                        <p class="text-sm text-gray-300 mb-2">
+                            Color
+                        </p>
+
+                        <input id="iconColor" type="color" value="#ffffff" class="w-12 h-8 rounded cursor-pointer">
+
+                    </div>
+
+                    <!-- Effect -->
+                    <div class="mt-4 flex gap-3">
+
+                        <p class="text-sm text-gray-300 mt-1">
+                            Effect
+                        </p>
+
+                        <select id="imageEffect"
+                            class="w-full h-8 rounded-md bg-[#2B2532] border border-[#45404D] px-2.5 text-sm text-gray-200 outline-none">
+
+                            <option value="none">None</option>
+                            <option value="shadow">Drop Shadow</option>
+                            <option value="cast">Cast Shadow</option>
+                            <option value="glow">Glow</option>
+
+                        </select>
+
+                    </div>
+
+                    <!-- padding -->
+
+                    <div class="mt-5">
+
+                        <p class="text-sm text-gray-300 mb-3">
+                            Padding
+                        </p>
+
+                        <div class="flex gap-2">
+
+                            <div class="flex flex-col items-center gap-1">
+                                <span class="text-[10px] text-gray-400 uppercase">All</span>
+                                <div class="flex items-center">
+                                    <input id="paddingAll" type="number" min="0" max="100" value="0"
+                                        class="w-20 h-10 rounded-lg bg-[#2B2532] border border-[#45404D] px-3 text-center outline-none">
+                                    <span class="text-gray-400 ml-1">%</span>
+                                </div>
+                            </div>
+
+                            <button id="paddingLink"
+                                class="w-10 h-10 rounded-lg border border-violet-500 text-violet-400 hover:bg-violet-500 hover:text-white transition flex items-center justify-center self-end">
+                                <iconify-icon icon="solar:menu-dots-bold"></iconify-icon>
+                            </button>
+
+                        </div>
+
+                        <div id="paddingIndividual" class="grid grid-cols-4 gap-2 mt-3 hidden">
+
+                            <div class="flex flex-col items-center gap-1 min-w-0">
+                                <span class="text-[10px] text-gray-400 uppercase">Top</span>
+                                <div class="flex items-center">
+                                    <input id="paddingTop" type="number" min="0" max="100" value="0"
+                                        class="w-full h-10 rounded-lg bg-[#2B2532] border border-[#45404D] px-3 text-center outline-none">
+
+                                </div>
+                            </div>
+
+                            <div class="flex flex-col items-center gap-1 min-w-0 flex ">
+                                <span class="text-[10px] text-gray-400 uppercase">Right</span>
+                                <input id="paddingRight" value="0"
+                                    class="w-full h-10 rounded-lg bg-[#2B2532] border border-[#45404D] px-3 outline-none text-center">
+
+
+                            </div>
+
+
+                            <div class="flex flex-col items-center gap-1 min-w-0">
+                                <span class="text-[10px] text-gray-400 uppercase">Bottom</span>
+                                <input id="paddingBottom" value="0"
+                                    class="w-full h-10 rounded-lg bg-[#2B2532] border border-[#45404D] px-3 outline-none text-center">
+
+                            </div>
+
+                            <div class="flex flex-col items-center gap-1 min-w-0">
+                                <span class="text-[10px] text-gray-400 uppercase">Left</span>
+                                <input id="paddingLeft" value="0"
+                                    class="w-full h-10 rounded-lg bg-[#2B2532] border border-[#45404D] px-3 outline-none text-center">
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <!-- Background -->
+                    <div class="mt-8 border-t border-[#3A3344] pt-5">
+
+                        <h3 class="text-xs tracking-[2px] uppercase text-gray-400 font-bold">
+                            Background
+                        </h3>
+
+                        <!-- Type -->
+                        <div class="mt-5 flex items-center gap-3">
+
+                            <p class="text-sm text-gray-300 whitespace-nowrap">
+                                Type
+                            </p>
+
+                            <div class="flex flex-wrap gap-1.5">
+
+                                <button id="bgColorBtn" class="px-3 h-8 rounded-md bg-violet-500 text-sm text-white">
+                                    Color
+                                </button>
+
+                                <button id="bgGradientBtn"
+                                    class="px-3 h-8 rounded-md bg-[#2B2532] border border-[#45404D] text-sm text-gray-200">
+                                    Gradient
+                                </button>
+
+                                <button id="bgMeshBtn"
+                                    class="px-3 h-8 rounded-md bg-[#2B2532] border border-[#45404D] text-sm text-gray-200">
+                                    Mesh
+                                </button>
+
+                                <button id="bgImageBtn"
+                                    class="px-3 h-8 rounded-md bg-[#2B2532] border border-[#45404D] text-sm text-gray-200">
+                                    Image
+                                </button>
+
+                            </div>
+
+                        </div>
+
+
+                        <div id="colorControls">
+
+                            <p class="mt-5 mb-3 text-sm">
+                                Color
+                            </p>
+
+                            <input id="backgroundColor" type="color" value="#7C3AED" class="w-12 h-8">
+
+                        </div>
+
+
+                        <div id="gradientControls" class="hidden">
+
+                            <p class="mt-5 mb-3 text-sm">
+                                Gradient
+                            </p>
+
+                            <div class="flex items-center gap-2">
+
+                                <input id="gradientColor1" type="color" value="#7C3AED" class="w-10 h-8">
+
+                                <input id="gradientColor2" type="color" value="#EC4899" class="w-10 h-8">
+
+                                <input id="gradientAngle" type="number" value="135"
+                                    class="w-20 h-8 rounded-md bg-[#2B2532] border border-[#45404D] px-2 text-sm">
+
+                            </div>
+
+                        </div>
+
+
+                        <div id="meshControls" class="hidden">
+
+                            <p class="mt-5 mb-3 text-sm">
+                                Mesh
+                            </p>
+
+                            <select id="meshStyle"
+                                class="w-full h-9 rounded-md bg-[#2B2532] border border-[#45404D] px-3 text-sm">
+
+                                <option value="mesh1">Aurora</option>
+                                <option value="mesh2">Sunset</option>
+                                <option value="mesh3">Ocean</option>
+                                <option value="mesh4">Forest</option>
+                                <option value="mesh5">Royal</option>
+
+                            </select>
+
+                            <p class="mt-4 mb-2 text-sm">
+                                Primary Color
+                            </p>
+
+                            <input id="meshColor1" type="color" value="#8B5CF6" class="w-12 h-8">
+
+                            <p class="mt-4 mb-2 text-sm">
+                                Secondary Color
+                            </p>
+
+                            <input id="meshColor2" type="color" value="#EC4899" class="w-12 h-8">
+
+                        </div>
+
+
+                        <!-- Texture -->
+                        <div class="mt-4 flex items-center gap-3">
+
+                            <p class="text-sm text-gray-300 w-[55px] shrink-0">
+                                Texture
+                            </p>
+
+                            <select id="textureSelect"
+                                class="flex-1 h-8 rounded-md bg-[#2C2633] border border-[#45404D] px-2.5 text-sm text-gray-200 outline-none">
+
+                                <option value="none" selected>None</option>
+                                <option value="argyle">Argyle</option>
+                                <option value="concentric">Concentric</option>
+                                <option value="contour">Contour</option>
+                                <option value="coral">Coral</option>
+                                <option value="fabric">Fabric</option>
+                                <option value="halftone">Halftone</option>
+                                <option value="maze">Maze</option>
+                                <option value="mosaic">Mosaic</option>
+                                <option value="polka">Polka</option>
+                                <option value="stipple">Stipple</option>
+                                <option value="waves">Waves</option>
+
+                            </select>
+                        </div>
+                    </div>
+                    <!-- More Options -->
+
+                    <div class="mt-5 border-t border-[#3A3344] pt-4">
+
+                        <!-- Badge -->
+                        <div class="flex items-center gap-3 mb-3">
+
+                            <p class="text-sm text-gray-300 w-[55px] shrink-0">
+                                Badge
+                            </p>
+
+                            <input id="badgeInput"
+                                class="flex-1 h-8 rounded-md bg-[#2B2532] border border-[#45404D] px-2.5 text-sm text-gray-200 outline-none">
+
+                        </div>
+
+
+                        <!-- Filename -->
+                        <div class="flex items-center gap-3 mb-3">
+
+                            <p class="text-sm text-gray-300 w-[55px] shrink-0">
+                                Filename
+                            </p>
+
+                            <input id="appNameInput" value="ic_launcher"
+                                class="flex-1 h-8 rounded-md bg-[#2B2532] border border-[#45404D] px-2.5 text-sm text-gray-200 outline-none">
+
+                        </div>
+
+
+                        <!-- Shape -->
+                        <div class="flex items-center gap-3 mb-3">
+
+                            <p class="text-sm text-gray-300 w-[55px] shrink-0">
+                                Shape
+                            </p>
+
+                            <div id="shapeSection" class="flex flex-wrap gap-1.5 flex-1">
+
+                                <button id="squareShape"
+                                    class="px-3 h-8 rounded-md bg-[#2B2532] border border-[#45404D] text-sm text-gray-200">
+                                    Square
+                                </button>
+
+                                <button id="squircleShape"
+                                    class="px-3 h-8 rounded-md bg-[#2B2532] border border-[#45404D] text-sm text-gray-200">
+                                    Squircle
+                                </button>
+
+                                <button id="circleShape" class="px-3 h-8 rounded-md bg-violet-500 text-sm text-white">
+                                    Circle
+                                </button>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- Themed -->
+                        <div class="flex items-center justify-between mt-3">
+
+                            <span class="text-sm text-gray-300">
+                                Themed
+                            </span>
+
+                            <label class="relative inline-flex items-center cursor-pointer">
+
+                                <input id="themedToggle" type="checkbox" class="sr-only peer">
+
+                                <div
+                                    class="w-9 h-5 bg-[#2B2532] rounded-full border border-[#45404D] peer-checked:bg-violet-500 transition">
+                                </div>
+
+                                <div
+                                    class="absolute left-1 top-1 w-3 h-3 bg-white rounded-full transition-all peer-checked:translate-x-4">
+                                </div>
+
+                            </label>
+
+                        </div>
+
+
+                        <!-- Made By -->
+                        <div class="mt-7 text-center text-gray-500 text-xs">
+
+                            Made by
+                            <span class="text-violet-400 underline">
+                                @romannurik
+                            </span>
+
+                        </div>
+
+                    </div>
+                </div>
+
+
+                <div id="textPanel" class="hidden">
+
+                    <h2 class="text-2xl lg:text-[30px] font-semibold text-white">
+                        Text
+                    </h2>
+
+                    <!-- Text -->
+                    <div class="mt-6 flex gap-3">
+
+                        <label class="text-sm text-gray-300 mt-3">
+                            Text
+                        </label>
+
+                        <input id="textInput" type="text" placeholder="Aa"
+                            class="mt-2 w-full h-8 rounded-lg bg-[#2B2532] border border-[#45404D] px-4">
+
+                    </div>
+
+                    <!-- Font -->
+                    <div class="mt-5 flex gap-3">
+
+                        <label class="text-sm text-gray-300 mt-3">
+                            Font
+                        </label>
+
+                        <div class="mt-2 flex flex-1 min-w-0 gap-2">
+
+
+                            <select id="fontSelect"
+                                class="flex-1 min-w-0 h-8 rounded-lg bg-[#2B2532] border border-[#45404D] px-3">
+                            </select>
+
+                            <button id="boldBtn" class="shrink-0 w-11 h-8 rounded-lg border border-[#45404D] font-bold">
+                                B
+                            </button>
+
+                            <button id="italicBtn" class="shrink-0 w-11 h-8 rounded-lg border border-[#45404D] italic">
+                                I
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                    <!-- Color -->
+                    <div class="mt-5">
+
+                        <label class="text-sm text-gray-300">
+                            Color
+                        </label>
+
+                        <input id="textColor" type="color" value="#ffffff" class="mt-2 w-12 h-8">
+
+                    </div>
+
+                    <!-- Effect -->
+                    <div class="mt-5 flex gap-3">
+
+                        <label class="text-sm text-gray-300 mt-3">
+                            Effect
+                        </label>
+
+                        <select id="textEffect"
+                            class="mt-2 w-full h-8 rounded-lg bg-[#2B2532] border border-[#45404D] px-3">
+
+                            <option>None</option>
+                            <option>Shadow</option>
+                            <option>Glow</option>
+                            <option>Outline</option>
+
+                        </select>
+
+                    </div>
+
+                    <!-- Padding -->
+                    <div class="mt-5">
+
+                        <label class="text-sm text-gray-300">
+                            Padding
+                        </label>
+
+                        <div class="mt-2 flex flex-wrap gap-2">
+
+                            <!-- All -->
+                            <div class="flex flex-col items-center gap-1">
+                                <span class="text-[10px] text-gray-400 uppercase">All</span>
+                                <div class="flex items-center">
+                                    <input id="textPaddingAll" type="number" min="0" max="100" value="0"
+                                        class="w-20 h-10 rounded-lg bg-[#2B2532] border border-[#45404D] px-3 text-center outline-none">
+                                    <span class="text-gray-400 ml-1">%</span>
+                                </div>
+                            </div>
+
+                            <!-- Expand -->
+                            <button id="textPaddingLink"
+                                class="w-10 h-10 rounded-lg border border-violet-500 flex items-center justify-center self-end hover:bg-violet-500 hover:text-white transition">
+
+                                <iconify-icon icon="solar:menu-dots-bold"></iconify-icon>
+
+                            </button>
+
+                        </div>
+
+                        <!-- Individual -->
+                        <div id="textPaddingIndividual" class="grid grid-cols-4 gap-2 mt-3 hidden">
+
+                            <div class="flex flex-col items-center gap-1 min-w-0">
+                                <span class="text-[10px] text-gray-400 uppercase">Top</span>
+                                <input id="textPaddingTop" value="0%"
+                                    class="w-full h-10 rounded-lg bg-[#2B2532] border border-[#45404D] px-3 text-center outline-none">
+                            </div>
+
+                            <div class="flex flex-col items-center gap-1 min-w-0">
+                                <span class="text-[10px] text-gray-400 uppercase">Right</span>
+                                <input id="textPaddingRight" value="0%"
+                                    class="w-full h-10 rounded-lg bg-[#2B2532] border border-[#45404D] px-3 text-center outline-none">
+                            </div>
+
+                            <div class="flex flex-col items-center gap-1 min-w-0">
+                                <span class="text-[10px] text-gray-400 uppercase">Bottom</span>
+                                <input id="textPaddingBottom" value="0%"
+                                    class="w-full h-10 rounded-lg bg-[#2B2532] border border-[#45404D] px-3 text-center outline-none">
+                            </div>
+
+                            <div class="flex flex-col items-center gap-1 min-w-0">
+                                <span class="text-[10px] text-gray-400 uppercase">Left</span>
+                                <input id="textPaddingLeft" value="0%"
+                                    class="w-full h-10 rounded-lg bg-[#2B2532] border border-[#45404D] px-3 text-center outline-none">
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <!-- Background -->
+                    <!-- Background -->
+                    <div class="mt-6 border-t border-[#3A3344] pt-4">
+
+                        <h3 class="text-xs tracking-[2px] uppercase text-gray-400 font-bold">
+                            Background
+                        </h3>
+
+
+                        <!-- Type -->
+                        <div class="mt-4 flex items-center gap-3">
+
+                            <p class="text-sm text-gray-300 w-[55px] shrink-0">
+                                Type
+                            </p>
+
+                            <div class="flex flex-wrap gap-1.5 flex-1">
+
+                                <button id="textBgColorBtn" class="px-3 h-8 rounded-md bg-violet-500 text-sm">
+                                    Color
+                                </button>
+
+                                <button id="textBgGradientBtn"
+                                    class="px-3 h-8 rounded-md bg-[#2B2532] border border-[#45404D] text-sm">
+                                    Gradient
+                                </button>
+
+                                <button id="textBgMeshBtn"
+                                    class="px-3 h-8 rounded-md bg-[#2B2532] border border-[#45404D] text-sm">
+                                    Mesh
+                                </button>
+
+                                <button id="textBgImageBtn"
+                                    class="px-3 h-8 rounded-md bg-[#2B2532] border border-[#45404D] text-sm">
+                                    Image
+                                </button>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- Color -->
+                        <div id="textColorControls" class="mt-4">
+
+                            <div class="flex items-center gap-3">
+
+                                <p class="text-sm text-gray-300 w-[55px] shrink-0">
+                                    Color
+                                </p>
+
+                                <input id="textBackgroundColor" type="color" value="#7C3AED" class="w-10 h-8">
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- Gradient -->
+                        <div id="textGradientControls" class="hidden mt-4">
+
+                            <div class="flex items-center gap-3">
+
+                                <p class="text-sm text-gray-300 w-[55px] shrink-0">
+                                    Gradient
+                                </p>
+
+                                <div class="flex items-center gap-1.5">
+
+                                    <input id="textGradientColor1" type="color" value="#7C3AED" class="w-8 h-8">
+
+                                    <input id="textGradientColor2" type="color" value="#EC4899" class="w-8 h-8">
+
+                                    <input id="textGradientAngle" type="number" value="135"
+                                        class="w-16 h-8 rounded-md bg-[#2B2532] border border-[#45404D] px-2 text-sm outline-none">
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- Mesh -->
+                        <div id="textMeshControls" class="hidden mt-4">
+
+                            <div class="flex items-center gap-3 mb-2">
+
+                                <p class="text-sm text-gray-300 w-[55px] shrink-0">
+                                    Mesh
+                                </p>
+
+                                <select id="textMeshStyle"
+                                    class="flex-1 h-8 rounded-md bg-[#2B2532] border border-[#45404D] px-2.5 text-sm outline-none">
+
+                                    <option value="mesh1">Aurora</option>
+                                    <option value="mesh2">Sunset</option>
+                                    <option value="mesh3">Ocean</option>
+                                    <option value="mesh4">Forest</option>
+                                    <option value="mesh5">Royal</option>
+
+                                </select>
+
+                            </div>
+
+
+                            <div class="flex items-center gap-3 mb-2">
+
+                                <p class="text-sm text-gray-300 w-[100px] shrink-0">
+                                    Primary Color
+                                </p>
+
+                                <input id="textMeshColor1" type="color" value="#8B5CF6" class="w-10 h-8">
+
+                            </div>
+
+
+                            <div class="flex items-center gap-3">
+
+                                <p class="text-sm text-gray-300 w-[100px] shrink-0">
+                                    Secondary Color
+                                </p>
+
+                                <input id="textMeshColor2" type="color" value="#EC4899" class="w-10 h-8">
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- Image -->
+                        <div id="textImageControls" class="hidden mt-4">
+
+                            <div class="flex items-center gap-3">
+
+                                <p class="text-sm text-gray-300 w-[85px] shrink-0">
+                                    Upload Image
+                                </p>
+
+                                <input type="file" id="textBackgroundImageInput" accept="image/*" class="hidden">
+
+                                <button id="textUploadImageBtn"
+                                    class="flex-1 h-8 rounded-md bg-violet-500 hover:bg-violet-600 transition text-sm">
+                                    Upload Image
+                                </button>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- Texture -->
+                        <div class="mt-4 flex items-center gap-3">
+
+                            <p class="text-sm text-gray-300 w-[55px] shrink-0">
+                                Texture
+                            </p>
+
+                            <select id="textTextureSelect"
+                                class="flex-1 h-8 rounded-md bg-[#2C2633] border border-[#45404D] px-2.5 text-sm outline-none">
+
+                                <option value="none" selected>None</option>
+                                <option value="argyle">Argyle</option>
+                                <option value="concentric">Concentric</option>
+                                <option value="contour">Contour</option>
+                                <option value="coral">Coral</option>
+                                <option value="fabric">Fabric</option>
+                                <option value="halftone">Halftone</option>
+                                <option value="maze">Maze</option>
+                                <option value="mosaic">Mosaic</option>
+                                <option value="polka">Polka</option>
+                                <option value="stipple">Stipple</option>
+                                <option value="waves">Waves</option>
+
+                            </select>
+
+
+                            <input id="textTextureColor" type="color" value="#ffffff" class="hidden">
+
+                        </div>
+
+                    </div>
+
+                    <!-- MORE -->
+                    <div class="mt-8 border-t border-[#3A3344] pt-5">
+
+                        <h3 class="text-xs tracking-[2px] uppercase text-gray-400 font-bold">
+                            More
+                        </h3>
+
+                        <!-- Badge -->
+                        <div class="mt-5 flex gap-3">
+
+                            <label class="text-sm text-gray-300 mt-3">
+                                Badge
+                            </label>
+
+                            <input id="badgeInput" type="text"
+                                class="mt-2 w-full h-8 rounded-lg bg-[#2B2532] border border-[#45404D] px-3">
+
+                            <!-- <label class="block mt-4 text-sm text-white">
+                                Badge Color
+                            </label> -->
+
+                            <!-- <input type="color" id="badgeColor" value="#2b0f14"
+                                class="mt-2 w-14 h-10 rounded border border-[#45404D] bg-transparent cursor-pointer"> -->
+                        </div>
+
+                        <!-- Filename -->
+                        <div class="mt-5 flex gap-3">
+
+                            <label class="text-sm text-gray-300 mt-3">
+                                Filename
+                            </label>
+
+                            <input type="text" value="ic_launcher"
+                                class="mt-2 w-full h-8 rounded-lg bg-[#2B2532] border border-[#45404D] px-3">
+
+                        </div>
+
+                        <!-- Shape -->
+                        <div class="mt-5 flex gap-3">
+
+                            <label class="text-sm text-gray-300 mt-3">
+                                Shape
+                            </label>
+
+                            <div class="mt-2 flex flex-wrap gap-2">
+
+                                <button id="textSquareShape"
+                                    class="px-4 h-8 rounded-lg border border-[#45404D] bg-[#2B2532]">
+                                    Square
+                                </button>
+
+                                <button id="textSquircleShape"
+                                    class="px-4 h-8 rounded-lg border border-[#45404D] bg-[#2B2532]">
+                                    Squircle
+                                </button>
+
+                                <button id="textCircleShape" class="px-4 h-8 rounded-lg bg-violet-500">
+                                    Circle
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                        <!-- Themed -->
+                        <div class="mt-5 flex items-center justify-between">
+
+                            <span class="text-gray-300">
+                                Themed
+                            </span>
+
+                            <label class="relative inline-flex items-center cursor-pointer">
+
+                                <input id="textThemedToggle" type="checkbox" class="sr-only peer">
+
+                                <div
+                                    class="w-11 h-6 bg-[#2B2532] rounded-full border border-[#45404D] peer-checked:bg-violet-500 transition">
+                                </div>
+
+                                <div
+                                    class="absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-all peer-checked:translate-x-5">
+                                </div>
+
+                            </label>
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+                <div id="imagePanel" class="hidden">
+
+                    <!-- IMAGE TITLE -->
+                    <h2 class="text-2xl lg:text-[30px] font-semibold text-white">
+                        Image
+                    </h2>
+
+
+                    <!-- TEXT -->
+                    <div class="mt-6 flex gap-3">
+
+                        <label class="text-sm text-gray-300 mt-3">
+                            Text
+                        </label>
+
+                        <input id="imageTextInput" type="text" placeholder="Aa"
+                            class="mt-2 w-full h-8 rounded-lg bg-[#2B2532] border border-[#45404D] px-4 outline-none">
+
+                    </div>
+
+
+                    <!-- IMAGE UPLOAD -->
+                    <div class="mt-6">
+
+                        <div id="uploadImageArea"
+                            class="h-32 rounded-xl border border-[#45404D] bg-[#2B2532] flex items-center px-5 gap-5 cursor-pointer hover:bg-[#302937] transition">
+
+                            <!-- Upload Icon -->
+                            <div class="w-20 h-20 rounded-lg bg-[#3A3344] flex items-center justify-center shrink-0">
+
+                                <iconify-icon icon="solar:gallery-bold" class="text-4xl text-gray-300"></iconify-icon>
+
+                                <input type="file" id="imageUpload" accept="image/*" class="hidden">
+
+                            </div>
+
+
+                            <!-- Upload Text -->
+                            <div class="min-w-0">
+
+                                <p class="font-semibold">
+                                    Drop image here
+                                </p>
+
+                                <p class="text-sm text-gray-400 mt-1">
+                                    Square images work best, or you can crop/center
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- SCALING -->
+                    <div class="mt-5 flex gap-3">
+
+                        <label class="text-sm text-gray-300 mt-3">
+                            Scaling
+                        </label>
+
+                        <div class="mt-2 flex flex-wrap gap-2">
+
+                            <button id="imageCenterBtn" type="button"
+                                class="px-5 h-8 rounded-lg bg-violet-500 hover:bg-violet-600 transition">
+                                Center
+                            </button>
+
+                            <button id="imageCropBtn" type="button"
+                                class="px-5 h-8 rounded-lg border border-[#45404D] bg-[#2B2532] hover:bg-[#302937] transition">
+                                Crop
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- MASK -->
+                    <div class="mt-5 flex items-center justify-between">
+
+                        <span class="text-sm text-gray-300">
+                            Mask
+                        </span>
+
+                        <label class="relative inline-flex items-center cursor-pointer">
+
+                            <input id="imageMask" type="checkbox" class="sr-only peer">
+
+                            <div
+                                class="w-11 h-6 bg-[#2B2532] border border-[#45404D] rounded-full peer-checked:bg-violet-500 transition">
+                            </div>
+
+                            <div
+                                class="absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-all peer-checked:translate-x-5">
+                            </div>
+
+                        </label>
+
+                    </div>
+
+
+                    <!-- EFFECT -->
+                    <div class="mt-5 flex gap-3">
+
+                        <label class="text-sm text-gray-300 mt-3">
+                            Effect
+                        </label>
+
+                        <select id="imageEffect"
+                            class="mt-2 w-full h-8 rounded-lg bg-[#2B2532] border border-[#45404D] px-3 outline-none">
+
+                            <option value="none">
+                                None
+                            </option>
+
+                            <option value="shadow">
+                                Shadow
+                            </option>
+
+                            <option value="glow">
+                                Glow
+                            </option>
+
+                            <option value="outline">
+                                Outline
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- PADDING -->
+                    <div class="mt-5">
+
+                        <label class="text-sm text-gray-300">
+                            Padding
+                        </label>
+
+
+                        <!-- ALL -->
+                        <div class="mt-2 flex flex-wrap gap-2">
+
+                            <div class="flex flex-col items-center gap-1">
+
+                                <span class="text-[10px] text-gray-400 uppercase">
+                                    All
+                                </span>
+
+                                <div class="flex items-center">
+
+                                    <input id="imagePaddingAll" type="number" min="0" max="100" value="0"
+                                        class="w-20 h-10 rounded-lg bg-[#2B2532] border border-[#45404D] px-3 text-center outline-none">
+
+                                    <span class="text-gray-400 ml-1">
+                                        %
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- LINK -->
+                            <button id="imagePaddingLink" type="button"
+                                class="w-10 h-10 rounded-lg border border-violet-500 text-violet-400 hover:bg-violet-500 hover:text-white transition flex items-center justify-center self-end">
+
+                                <iconify-icon icon="solar:menu-dots-bold"></iconify-icon>
+
+                            </button>
+
+                        </div>
+
+
+                        <!-- INDIVIDUAL PADDING -->
+                        <div id="imagePaddingIndividual" class="grid grid-cols-4 gap-2 mt-3 hidden">
+
+                            <div class="flex flex-col items-center gap-1">
+
+                                <span class="text-[10px] text-gray-400 uppercase">
+                                    Top
+                                </span>
+
+                                <input id="imagePaddingTop" type="number" min="0" max="100" value="0"
+                                    class="w-full h-10 rounded-lg bg-[#2B2532] border border-[#45404D] px-2 text-center outline-none">
+
+                            </div>
+
+
+                            <div class="flex flex-col items-center gap-1">
+
+                                <span class="text-[10px] text-gray-400 uppercase">
+                                    Right
+                                </span>
+
+                                <input id="imagePaddingRight" type="number" min="0" max="100" value="0"
+                                    class="w-full h-10 rounded-lg bg-[#2B2532] border border-[#45404D] px-2 text-center outline-none">
+
+                            </div>
+
+
+                            <div class="flex flex-col items-center gap-1">
+
+                                <span class="text-[10px] text-gray-400 uppercase">
+                                    Bottom
+                                </span>
+
+                                <input id="imagePaddingBottom" type="number" min="0" max="100" value="0"
+                                    class="w-full h-10 rounded-lg bg-[#2B2532] border border-[#45404D] px-2 text-center outline-none">
+
+                            </div>
+
+
+                            <div class="flex flex-col items-center gap-1">
+
+                                <span class="text-[10px] text-gray-400 uppercase">
+                                    Left
+                                </span>
+
+                                <input id="imagePaddingLeft" type="number" min="0" max="100" value="0"
+                                    class="w-full h-10 rounded-lg bg-[#2B2532] border border-[#45404D] px-2 text-center outline-none">
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- BACKGROUND -->
+                    <div class="mt-8 border-t border-[#3A3344] pt-5">
+
+                        <h3 class="text-xs tracking-[2px] uppercase text-gray-400 font-bold">
+                            Background
+                        </h3>
+
+                        <!-- TYPE -->
+                        <div class="mt-5 flex items-center gap-3">
+
+                            <p class="text-sm w-[45px] shrink-0">
+                                Type
+                            </p>
+
+                            <div class="flex flex-wrap gap-1.5">
+
+                                <button id="imageBgColorBtn" type="button"
+                                    class="px-3 h-8 text-sm rounded-md bg-violet-500">
+                                    Color
+                                </button>
+
+                                <button id="imageBgGradientBtn" type="button"
+                                    class="px-3 h-8 text-sm rounded-md bg-[#2B2532] border border-[#45404D]">
+                                    Gradient
+                                </button>
+
+                                <button id="imageBgMeshBtn" type="button"
+                                    class="px-3 h-8 text-sm rounded-md bg-[#2B2532] border border-[#45404D]">
+                                    Mesh
+                                </button>
+
+                                <button id="imageBgImageBtn" type="button"
+                                    class="px-3 h-8 text-sm rounded-md bg-[#2B2532] border border-[#45404D]">
+                                    Image
+                                </button>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- COLOR -->
+                        <div id="imageColorControls" class="mt-4 flex items-center gap-3">
+
+                            <p class="text-sm w-[45px] shrink-0">
+                                Color
+                            </p>
+
+                            <input type="color" id="imageBackgroundColor" value="#7C3AED"
+                                class="w-10 h-8 cursor-pointer">
+
+                        </div>
+
+
+                        <!-- GRADIENT -->
+                        <div id="imageGradientControls" class="hidden mt-4">
+
+                            <div class="flex items-center gap-3">
+
+                                <p class="text-sm w-[45px] shrink-0">
+                                    Gradient
+                                </p>
+
+                                <div class="flex items-center gap-2">
+
+                                    <input id="imageGradientColor1" type="color" value="#7C3AED"
+                                        class="w-10 h-8 cursor-pointer">
+
+                                    <input id="imageGradientColor2" type="color" value="#EC4899"
+                                        class="w-10 h-8 cursor-pointer">
+
+                                    <input id="imageGradientAngle" type="number" value="135"
+                                        class="w-16 h-8 rounded-md bg-[#2B2532] border border-[#45404D] px-2 text-sm outline-none">
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- MESH -->
+                        <div id="imageMeshControls" class="hidden mt-4">
+
+                            <div class="flex items-center gap-3">
+
+                                <p class="text-sm w-[45px] shrink-0">
+                                    Mesh
+                                </p>
+
+                                <select id="imageMeshStyle"
+                                    class="w-[150px] h-8 rounded-md bg-[#2B2532] border border-[#45404D] px-2 text-sm outline-none">
+
+                                    <option value="mesh1">Aurora</option>
+                                    <option value="mesh2">Sunset</option>
+                                    <option value="mesh3">Ocean</option>
+                                    <option value="mesh4">Forest</option>
+                                    <option value="mesh5">Royal</option>
+
+                                </select>
+
+                            </div>
+
+                            <div class="mt-3 flex items-center gap-3">
+
+                                <p class="text-sm w-[45px] shrink-0">
+                                    Colors
+                                </p>
+
+                                <div class="flex gap-2">
+
+                                    <input id="imageMeshColor1" type="color" value="#8B5CF6"
+                                        class="w-10 h-8 cursor-pointer">
+
+                                    <input id="imageMeshColor2" type="color" value="#EC4899"
+                                        class="w-10 h-8 cursor-pointer">
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- BACKGROUND IMAGE -->
+                        <div id="imageImageControls" class="hidden mt-4">
+
+                            <div class="flex items-center gap-3">
+
+                                <p class="text-sm w-[80px] shrink-0">
+                                    Upload Image
+                                </p>
+
+                                <input type="file" id="imageBackgroundImageInput" accept="image/*" class="hidden">
+
+                                <button id="imageUploadImageBtn" type="button"
+                                    class="px-3 h-8 text-sm rounded-md bg-violet-500 hover:bg-violet-600 transition">
+                                    Upload
+                                </button>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- TEXTURE -->
+                        <div class="mt-4 flex items-center gap-3">
+
+                            <p class="text-sm w-[45px] shrink-0">
+                                Texture
+                            </p>
+
+                            <select id="imageTextureSelect"
+                                class="flex-1 min-w-0 h-8 rounded-md bg-[#2C2633] border border-[#45404D] px-2 text-sm outline-none">
+
+                                <option value="none" selected>None</option>
+                                <option value="argyle">Argyle</option>
+                                <option value="concentric">Concentric</option>
+                                <option value="contour">Contour</option>
+                                <option value="coral">Coral</option>
+                                <option value="fabric">Fabric</option>
+                                <option value="halftone">Halftone</option>
+                                <option value="maze">Maze</option>
+                                <option value="mosaic">Mosaic</option>
+                                <option value="polka">Polka</option>
+                                <option value="stipple">Stipple</option>
+                                <option value="waves">Waves</option>
+
+                            </select>
+
+                            <button id="imageTextureColorBtn" type="button"
+                                class="w-8 h-8 shrink-0 rounded-md bg-[#2B2532] border border-[#45404D] flex items-center justify-center">
+
+                                <iconify-icon icon="solar:palette-round-bold" class="text-sm">
+                                </iconify-icon>
+
+                            </button>
+
+                            <input id="imageTextureColor" type="color" value="#ffffff" class="hidden">
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- MORE -->
+                    <div class="mt-8 border-t border-[#3A3344] pt-5">
+
+                        <h3 class="text-xs tracking-[2px] uppercase text-gray-400 font-bold">
+                            More
+                        </h3>
+
+
+                        <!-- BADGE -->
+                        <div class="mt-5 flex gap-3">
+
+                            <label class="text-sm text-gray-300 mt-3">
+                                Badge
+                            </label>
+
+                            <input id="imageBadgeInput" type="text"
+                                class="mt-2 w-full h-8 rounded-lg bg-[#2B2532] border border-[#45404D] px-3 outline-none">
+
+                        </div>
+
+
+                        <!-- FILENAME -->
+                        <div class="mt-5 flex gap-3">
+
+                            <label class="text-sm text-gray-300 mt-3">
+                                Filename
+                            </label>
+
+                            <input id="imageFilenameInput" type="text" value="ic_launcher"
+                                class="mt-2 w-full h-8 rounded-lg bg-[#2B2532] border border-[#45404D] px-3 outline-none">
+
+                        </div>
+
+
+                        <!-- SHAPE -->
+                        <div class="mt-5 flex gap-3">
+
+                            <label class="text-sm text-gray-300 mt-3">
+                                Shape
+                            </label>
+
+
+                            <div class="mt-2 flex flex-wrap gap-2">
+
+                                <button id="imageSquareShape" type="button"
+                                    class="px-4 h-8 rounded-lg border border-[#45404D] bg-[#2B2532]">
+                                    Square
+                                </button>
+
+                                <button id="imageSquircleShape" type="button"
+                                    class="px-4 h-8 rounded-lg border border-[#45404D] bg-[#2B2532]">
+                                    Squircle
+                                </button>
+
+                                <button id="imageCircleShape" type="button" class="px-4 h-8 rounded-lg bg-violet-500">
+                                    Circle
+                                </button>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- THEMED -->
+                        <div class="mt-5 flex items-center justify-between">
+
+                            <span class="text-gray-300">
+                                Themed
+                            </span>
+
+                            <label class="relative inline-flex items-center cursor-pointer">
+
+                                <input id="imageThemedToggle" type="checkbox" class="sr-only peer">
+
+                                <div
+                                    class="w-11 h-6 bg-[#2B2532] rounded-full border border-[#45404D] peer-checked:bg-violet-500 transition">
+                                </div>
+
+                                <div
+                                    class="absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-all peer-checked:translate-x-5">
+                                </div>
+
+                            </label>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </aside>
+
+        <!-- RIGHT -->
+        <section class="order-1 lg:order-2 flex-1 min-w-0 flex flex-col">
+
+            <!-- Platform -->
+            <div class="lg:h-[150px] shrink-0 border-b border-[#3A3344]">
+
+                <div
+                    class="h-full flex items-center gap-3 lg:gap-4 px-4 sm:px-6 lg:px-8 py-3 lg:py-0 overflow-x-auto platform-scroll">
+
+                    <!-- Android -->
+                    <div id="androidPlatform"
+                        class="w-24 sm:w-36 h-24 sm:h-28 shrink-0 rounded-xl border-2 border-violet-500 bg-[#2A2432] flex flex-col items-center justify-center cursor-pointer">
+
+                        <div class="w-14 h-14  bg-violet-600 flex items-center justify-center">
+                            <iconify-icon id="androidPlatformIcon" icon="solar:bolt-bold" class="text-4xl text-white">
+                            </iconify-icon>
+                        </div>
+
+                        <p class="mt-2 sm:mt-3 px-1 text-xs sm:text-base text-center font-semibold">
+                            Android Icon
+                        </p>
+
+                    </div>
+
+
+                    <!-- iOS -->
+                    <div id="iosPlatform"
+                        class="w-24 sm:w-36 h-24 sm:h-28 shrink-0 rounded-xl border border-[#433B4D] bg-[#2A2432] flex flex-col items-center justify-center cursor-pointer">
+
+                        <div class="w-14 h-14 rounded-2xl bg-violet-600 flex items-center justify-center">
+                            <iconify-icon id="iosPlatformIcon" icon="solar:bolt-bold" class="text-4xl text-white">
+                            </iconify-icon>
+                        </div>
+
+                        <p class="mt-2 sm:mt-3 px-1 text-xs sm:text-base text-center font-semibold">
+                            iOS Icon
+                        </p>
+
+                    </div>
+
+
+                    <!-- Web -->
+                    <div id="webPlatform"
+                        class="w-24 sm:w-36 h-24 sm:h-28 shrink-0 rounded-xl border border-[#433B4D] bg-[#2A2432] flex flex-col items-center justify-center cursor-pointer">
+
+                        <div class="w-5 h-5 rounded-full bg-violet-600 flex items-center justify-center">
+                            <iconify-icon id="webPlatformIcon" icon="solar:bolt-bold" class="text-[11px] text-white">
+                            </iconify-icon>
+                        </div>
+
+                        <p class="mt-2 sm:mt-3 px-1 text-xs sm:text-base text-center font-semibold">
+                            Web Icons
+                        </p>
+
+                    </div>
+
+
+                    <!-- Add -->
+                    <!-- <div
+                        class="w-24 sm:w-36 h-24 sm:h-28 shrink-0 rounded-xl border border-[#433B4D] bg-[#2A2432] flex items-center justify-center cursor-pointer">
+
+                        <iconify-icon icon="solar:add-bold" class="text-4xl text-gray-400">
+                        </iconify-icon>
+
+                    </div> -->
+
+                </div>
+
+            </div>
+
+            <!-- Preview -->
+            <div class="flex-1 min-h-0 p-3 sm:p-5">
+                <div class="theme-preview w-full h-full flex items-center justify-center overflow-hidden">
+                    <div id="previewViewport"
+                        class="relative w-full h-full min-h-[160px] flex items-center justify-center overflow-hidden">
+                        <div id="previewScaler" class="shrink-0 w-max h-max" style="transform-origin:center center;">
+
+                            <!-- Phone -->
+                            <div id="androidPreview" class="relative w-[420px] h-[520px]">
+
+
+                                <!-- Wallpaper -->
+                                <img id="wallpaper" src="assets/0f9c1041-2ebe-4d42-8a81-64a10244ef84.png" />
+
+                                <!-- Icon -->
+                                <div id="iconPreview"
+                                    class="absolute top-[50px] left-1/2 -translate-x-1/2 z-20 flex flex-col items-center">
+                                    <div id="iconBackground"
+                                        class="relative w-[56px] h-[56px] rounded-[22px] bg-violet-600 flex items-center justify-center overflow-hidden">
+
+                                        <img id="androidTexture"
+                                            class="absolute inset-0 w-full h-full object-cover opacity-30 pointer-events-none hidden z-10">
+
+                                        <iconify-icon id="previewIcon" class="relative z-20" style=" width:100%; height:100%; display:none; align-items:center; justify-content:center; transform: scale(1.20);
+">
+                                        </iconify-icon>
+
+                                        <img id="previewImage"
+                                            class="hidden absolute inset-0 w-full h-full object-cover z-20">
+
+                                        <div id="previewText"
+                                            class="absolute hidden flex flex-col items-center justify-center text-white font-bold overflow-hidden z-20"
+                                            style=" left:50%; top:50%; transform:translate(-50%,-50%); width:56px; height:56px; border-radius:22px; background-size:cover; background-position:center; background-repeat:no-repeat;">
+
+                                            <span id="previewTextValue">Aa</span>
+
+                                            <span id="previewBadge"
+                                                class="hidden mt-1 px-2 py-[2px] rounded-md text-[8px] font-bold uppercase leading-none text-white">
+                                                PINK
+                                            </span>
+
+                                        </div>
+                                        <!-- 
+                                    <div id="previewBadge" class="hidden absolute top-1 right-1 min-w-[18px] h-[18px]
+bg-red-500 rounded-full text-white text-[10px]
+flex items-center justify-center font-bold z-50">
+                                        0
+                                    </div> -->
+
+                                    </div>
+
+                                    <p id="appName" class="theme text-[var(--text-primary)] text-sm mt-2">
+                                        App Name
+                                    </p>
+
+                                </div>
+
+                                <!-- Phone Frame -->
+                                <!-- <img
+                src="assets/images/android-frame.png"
+                class="absolute
+                       inset-0
+                       w-full
+                       h-full
+                       pointer-events-none
+                       z-30" /> -->
+
+                            </div>
+
+                            <div id="iosPreview" class="relative w-[420px] h-[520px] hidden">
+
+                                <!-- iOS Wallpaper -->
+                                <img id="iosWallpaper" src="assets/ChatGPT Image Jun 29, 2026, 06_14_10 PM.png">
+                                <!-- iOS Icon -->
+                                <div id="iosIconPreview"
+                                    class="absolute left-[70px] top-[55px] flex flex-col items-center z-20">
+
+                                    <div id="iosIconBackground"
+                                        class=" relative w-[60px] h-[60px] rounded-[16px] bg-violet-600 flex items-center justify-center overflow-hidden">
+                                        <iconify-icon id="iosPreviewIcon" class="relative z-20"
+                                            style=" width:100%; height:100%; display:none; align-items:center; justify-content:center;">
+                                        </iconify-icon>
+
+                                        <img id="iosPreviewImage"
+                                            class="hidden absolute inset-0 w-full h-full object-cover">
+
+                                        <div id="iosPreviewText"
+                                            class="absolute hidden flex items-center justify-center text-white font-bold overflow-hidden"
+                                            style=" left:50%; top:50%; transform:translate(-50%,-50%); width:60px; height:60px; border-radius:16px; background-size:cover; background-position:center; background-repeat:no-repeat;">
+                                            <span id="iosPreviewTextValue">Aa</span>
+                                        </div>
+
+                                        <div id="iosPreviewBadge"
+                                            class="hidden absolute top-1 right-1 min-w-[18px] h-[18px] bg-red-500 rounded-full text-white text-[10px] flex items-center justify-center font-bold z-50">
+                                            0
+                                        </div>
+
+
+                                        <img id="iosTexture"
+                                            class="absolute inset-0 w-full h-full object-cover opacity-30 pointer-events-none hidden">
+
+                                    </div>
+
+                                    <p class="text-[var(--text-primary)] text-sm mt-1" id="iosAppName">
+                                        App Name
+                                    </p>
+                                </div>
+
+                                <!-- iOS Frame -->
+                                <!-- <img src="assets/ios-frame.png" class="absolute inset-0 w-full h-full pointer-events-none z-30"> -->
+
+                            </div>
+
+                            <div id="webPreview" class="hidden relative w-[760px] h-[500px]">
+                                <!-- Browser -->
+                                <div class="w-full h-full rounded-xl overflow-hidden bg-[#2F3136] border border-[#444]">
+
+                                    <!-- Top Bar -->
+                                    <div class="h-14 bg-[#2B2D31] border-b border-[#444] flex items-center px-4 gap-3">
+
+                                        <!-- macOS buttons -->
+                                        <div class="flex gap-2">
+                                            <div class="w-3 h-3 rounded-full bg-red-400"></div>
+                                            <div class="w-3 h-3 rounded-full bg-yellow-400"></div>
+                                            <div class="w-3 h-3 rounded-full bg-green-400"></div>
+                                        </div>
+
+                                        <!-- Tab -->
+                                        <div class="ml-4 h-10 px-5 rounded-t-lg bg-[#3A3D42] flex items-center gap-2">
+
+                                            <div id="webTabIcon"
+                                                class="relative w-[18px] h-[18px] rounded-md bg-violet-600 flex items-center justify-center overflow-hidden">
+
+                                                <img id="webTexture"
+                                                    class="absolute inset-0 w-full h-full object-cover opacity-30 pointer-events-none hidden">
+
+                                                <iconify-icon id="webPreviewIcon"
+                                                    style=" width:100%; height:100%; display:none; align-items:center; justify-content:center;">
+                                                </iconify-icon>
+
+                                                <img id="webPreviewImage"
+                                                    class="hidden absolute inset-0 w-full h-full object-cover z-20">
+
+                                                <div id="webPreviewText"
+                                                    class="absolute hidden flex items-center justify-center text-white font-bold overflow-hidden"
+                                                    style=" left:50%; top:50%; transform:translate(-50%,-50%); width:18px; height:18px; border-radius:5px; background-size:cover; background-position:center; background-repeat:no-repeat;">
+                                                    <span id="webPreviewTextValue"
+                                                        style=" white-space: nowrap; font-size:10px; line-height:1; display:block;">
+                                                        Aa
+                                                    </span>
+                                                </div>
+
+                                                <div id="webPreviewBadge"
+                                                    class="hidden absolute -top-1 -right-1 min-w-[8px] h-[8px] bg-red-500 rounded-full text-white text-[5px] flex items-center justify-center font-bold z-50">
+                                                    0
+                                                </div>
+
+                                            </div>
+
+                                            <button class="text-gray-300 text-xl">+</button>
+
+                                        </div>
+
+                                        <!-- Address Bar -->
+                                        <div class="h-12 bg-[#3A3D42] flex items-center gap-3 px-4">
+
+                                            <iconify-icon icon="solar:arrow-left-linear"></iconify-icon>
+
+                                            <iconify-icon icon="solar:arrow-right-linear"></iconify-icon>
+
+                                            <iconify-icon icon="solar:refresh-linear"></iconify-icon>
+
+                                            <div
+                                                class="flex-1 h-8 rounded-full bg-[#202225] flex items-center px-4 text-gray-300">
+
+                                                https://example.com
+
+                                            </div>
+
+                                            <iconify-icon icon="solar:menu-dots-bold"></iconify-icon>
+
+                                        </div>
+
+                                        <!-- Website -->
+                                        <div class="relative h-[calc(100%-104px)] bg-[#44474D]">
+
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <input type="file" id="backgroundImageInput" accept="image/*" class="hidden">
+
+    <style>
+        /* Navbar fixed on phone / tablet */
+        @media (max-width: 1023px) {
+
+            header {
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                z-index: 50;
+                background: var(--header-bg) !important;
+            }
+
+            body {
+                padding-top: 64px;
+                /* header ni height jetlu */
+            }
+
+        }
+    </style>
+
+    <script src="https://cdn.jsdelivr.net/npm/html-to-image@1.11.11/dist/html-to-image.min.js"></script>
+
+    <script src="js/app.js"></script>
+    <script src="js/tabs.js"></script>
+    <script src="js/icon-loader.js"></script>
+    <script src="js/platform.js"></script>
+    <script src="js/background.js"></script>
+    <script src="js/texture.js"></script>
+    <script src="js/preview.js"></script>
+    <script src="js/export.js"></script>
+    <script src="js/padding.js"></script>
+    <script src="js/shape.js"></script>
+    <script src="js/themed.js"></script>
+    <script src="js/text.js"></script>
+    <script src="js/badge.js"></script>
+    <script src="js/image.js"></script>
+    <script src="js/theme.js"></script>
+    <script src="js/responsive.js"></script>
+
+</body>
+
+</html>
